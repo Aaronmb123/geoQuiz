@@ -1,16 +1,12 @@
 package bakeaaro.com.geoquiz;
 
-import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Gravity;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -36,6 +32,13 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_tv);
+        mQuestionTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                updateQuestion();
+            }
+        });
 
         mNextButton = (Button) findViewById(R.id.next_b);
         mNextButton.setOnClickListener(new View.OnClickListener() {
@@ -51,23 +54,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(true);
-                // 'this' would refer to the anonymous class
-                //Toast.makeText(QuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
-                //toast.setGravity(Gravity.TOP |Gravity.LEFT, 0, 0);
-
-//                LayoutInflater inflater = getLayoutInflater();
-//                View layout = inflater.inflate(R.layout.custom_toast,
-//                        (ViewGroup) findViewById(R.id.toast_LinearLayout));
-//
-//                TextView text = (TextView) layout.findViewById(R.id.toast_TV);
-//                text.setText("Correct!");
-//
-//                Toast toast = new Toast(QuizActivity.this);
-//                toast.setGravity(Gravity.TOP, 0, 150);
-//                toast.setDuration(Toast.LENGTH_SHORT);
-//                toast.setView(layout);
-//                toast.show();
-
             }
         });
 
@@ -76,19 +62,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(false);
-                //Toast.makeText(QuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
-//                LayoutInflater inflater = getLayoutInflater();
-//                View layout = inflater.inflate(R.layout.custom_toast,
-//                (ViewGroup) findViewById(R.id.toast_LinearLayout));
-//
-//                TextView text = (TextView) layout.findViewById(R.id.toast_TV);
-//                text.setText("Incorrect!");
-//
-//                Toast toast = new Toast(QuizActivity.this);
-//                toast.setGravity(Gravity.TOP, 0, 150);
-//                toast.setDuration(Toast.LENGTH_SHORT);
-//                toast.setView(layout);
-//                toast.show();
             }
         });
 
@@ -99,7 +72,6 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
-        //Log.i("mCurrentId:", Integer.toString(mCurrentIndex));
     }
 
     private void checkAnswer(boolean userPressedTrue) {
