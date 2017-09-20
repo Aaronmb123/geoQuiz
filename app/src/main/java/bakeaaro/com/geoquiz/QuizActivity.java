@@ -50,22 +50,23 @@ public class QuizActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkAnswer(true);
                 // 'this' would refer to the anonymous class
                 //Toast.makeText(QuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
                 //toast.setGravity(Gravity.TOP |Gravity.LEFT, 0, 0);
 
-                LayoutInflater inflater = getLayoutInflater();
-                View layout = inflater.inflate(R.layout.custom_toast,
-                        (ViewGroup) findViewById(R.id.toast_LinearLayout));
-
-                TextView text = (TextView) layout.findViewById(R.id.toast_TV);
-                text.setText("Correct!");
-
-                Toast toast = new Toast(QuizActivity.this);
-                toast.setGravity(Gravity.TOP, 0, 150);
-                toast.setDuration(Toast.LENGTH_SHORT);
-                toast.setView(layout);
-                toast.show();
+//                LayoutInflater inflater = getLayoutInflater();
+//                View layout = inflater.inflate(R.layout.custom_toast,
+//                        (ViewGroup) findViewById(R.id.toast_LinearLayout));
+//
+//                TextView text = (TextView) layout.findViewById(R.id.toast_TV);
+//                text.setText("Correct!");
+//
+//                Toast toast = new Toast(QuizActivity.this);
+//                toast.setGravity(Gravity.TOP, 0, 150);
+//                toast.setDuration(Toast.LENGTH_SHORT);
+//                toast.setView(layout);
+//                toast.show();
 
             }
         });
@@ -74,19 +75,20 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkAnswer(false);
                 //Toast.makeText(QuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
-                LayoutInflater inflater = getLayoutInflater();
-                View layout = inflater.inflate(R.layout.custom_toast,
-                        (ViewGroup) findViewById(R.id.toast_LinearLayout));
-
-                TextView text = (TextView) layout.findViewById(R.id.toast_TV);
-                text.setText("Incorrect!");
-
-                Toast toast = new Toast(QuizActivity.this);
-                toast.setGravity(Gravity.TOP, 0, 150);
-                toast.setDuration(Toast.LENGTH_SHORT);
-                toast.setView(layout);
-                toast.show();
+//                LayoutInflater inflater = getLayoutInflater();
+//                View layout = inflater.inflate(R.layout.custom_toast,
+//                (ViewGroup) findViewById(R.id.toast_LinearLayout));
+//
+//                TextView text = (TextView) layout.findViewById(R.id.toast_TV);
+//                text.setText("Incorrect!");
+//
+//                Toast toast = new Toast(QuizActivity.this);
+//                toast.setGravity(Gravity.TOP, 0, 150);
+//                toast.setDuration(Toast.LENGTH_SHORT);
+//                toast.setView(layout);
+//                toast.show();
             }
         });
 
@@ -97,7 +99,19 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
-        Log.i("mCurrentId:", /*Integer.toString(question) */ Integer.toString(mCurrentIndex));
+        //Log.i("mCurrentId:", Integer.toString(mCurrentIndex));
+    }
+
+    private void checkAnswer(boolean userPressedTrue) {
+        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+        int messageResId = 0;
+        if (userPressedTrue == answerIsTrue) {
+            messageResId = R.string.correct_toast;
+        } else {
+            messageResId = R.string.incorrect_toast;
+        }
+
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 
 }
