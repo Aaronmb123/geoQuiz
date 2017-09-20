@@ -3,6 +3,7 @@ package bakeaaro.com.geoquiz;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,35 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mNextButton;
+    private TextView mQuestionTextView;
+
+    private Question[] mQuestionBank = new Question[] {
+            new Question(R.string.question_australia, true),
+            new Question(R.string.question_ocean, true),
+            new Question(R.string.question_mideast, false),
+            new Question(R.string.question_africa, false),
+            new Question(R.string.question_americas, true),
+            new Question(R.string.question_asia, true)
+    };
+
+    private int mCurrentIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
+        mQuestionTextView = (TextView) findViewById(R.id.question_tv);
+
+        mNextButton = (Button) findViewById(R.id.next_b);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                updateQuestion();
+            }
+        });
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +69,7 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         });
+
         mFalseButton = (Button) findViewById(R.id.false_button);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,8 +90,14 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        updateQuestion();
+
     }
 
-
+    private void updateQuestion() {
+        int question = mQuestionBank[mCurrentIndex].getTextResId();
+        mQuestionTextView.setText(question);
+        Log.i("mCurrentId:", /*Integer.toString(question) */ Integer.toString(mCurrentIndex));
+    }
 
 }
