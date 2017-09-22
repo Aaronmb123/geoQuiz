@@ -61,8 +61,9 @@ public class QuizActivity extends AppCompatActivity {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
                 if (mQuestionsBankDisabledButtons[mCurrentIndex] == 0) {
-                    Log.i("enabling answer buttons", " yup");
                     enableAnswerButtons();
+                } else {
+                    disableAnswerButtons();
                 }
             }
         });
@@ -78,8 +79,9 @@ public class QuizActivity extends AppCompatActivity {
                 }
                 updateQuestion();
                 if (mQuestionsBankDisabledButtons[mCurrentIndex] == 0) {
-                    Log.i("enabling answer buttons", " yup");
                     enableAnswerButtons();
+                } else {
+                    disableAnswerButtons();
                 }
             }
         });
@@ -89,7 +91,8 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(true);
-                disableAnswerButtons(mCurrentIndex);
+                mQuestionsBankDisabledButtons[mCurrentIndex] = 1;
+                disableAnswerButtons();
             }
         });
 
@@ -98,7 +101,8 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(false);
-                disableAnswerButtons(mCurrentIndex);
+                mQuestionsBankDisabledButtons[mCurrentIndex] = 1;
+                disableAnswerButtons();
             }
         });
 
@@ -159,15 +163,14 @@ public class QuizActivity extends AppCompatActivity {
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 
-    private void disableAnswerButtons(int index) {
-        mQuestionsBankDisabledButtons[index] = 1;
+    private void disableAnswerButtons() {
         mTrueButton.setClickable(false);
         mFalseButton.setClickable(false);
         //mTrueButton.setTextColor(0xD3D3D3);
         //mFalseButton.setTextColor(0xD3D3D3);
         //Log.d("mQuestionBankDisabledButtons ", + Arrays.toString(mQuestionsBankDisabledButtons));
-        //for(int num : mQuestionsBankDisabledButtons)
-           //Log.v("index: ", Integer.toString(num));
+        for(int num : mQuestionsBankDisabledButtons)
+           Log.v("index: ", Integer.toString(num));
     }
 
     private void enableAnswerButtons() {
