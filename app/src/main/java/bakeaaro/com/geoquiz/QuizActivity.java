@@ -29,6 +29,10 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_asia, true)
     };
 
+    private int[] mQuestionsBankDisabledButtons = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            //new int[mQuestionBank.length];
+    //Arrays.fill(mQuestionsBankDisabledButtons, 0);
+
     private int mCurrentIndex = 0;
 
     @Override
@@ -56,6 +60,10 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
+                if (mQuestionsBankDisabledButtons[mCurrentIndex] == 0) {
+                    Log.i("enabling answer buttons", " yup");
+                    enableAnswerButtons();
+                }
             }
         });
 
@@ -69,6 +77,10 @@ public class QuizActivity extends AppCompatActivity {
                     mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
                 }
                 updateQuestion();
+                if (mQuestionsBankDisabledButtons[mCurrentIndex] == 0) {
+                    Log.i("enabling answer buttons", " yup");
+                    enableAnswerButtons();
+                }
             }
         });
 
@@ -77,6 +89,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(true);
+                disableAnswerButtons(mCurrentIndex);
             }
         });
 
@@ -85,6 +98,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(false);
+                disableAnswerButtons(mCurrentIndex);
             }
         });
 
@@ -142,8 +156,25 @@ public class QuizActivity extends AppCompatActivity {
         } else {
             messageResId = R.string.incorrect_toast;
         }
-
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void disableAnswerButtons(int index) {
+        mQuestionsBankDisabledButtons[index] = 1;
+        mTrueButton.setClickable(false);
+        mFalseButton.setClickable(false);
+        //mTrueButton.setTextColor(0xD3D3D3);
+        //mFalseButton.setTextColor(0xD3D3D3);
+        //Log.d("mQuestionBankDisabledButtons ", + Arrays.toString(mQuestionsBankDisabledButtons));
+        //for(int num : mQuestionsBankDisabledButtons)
+           //Log.v("index: ", Integer.toString(num));
+    }
+
+    private void enableAnswerButtons() {
+        mTrueButton.setClickable(true);
+        mFalseButton.setClickable(true);
+        //mTrueButton.setTextColor(0x000000);
+        //mFalseButton.setTextColor(0x000000);
     }
 
 }
