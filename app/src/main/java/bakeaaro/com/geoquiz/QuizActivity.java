@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.lang.Math;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -28,12 +29,14 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_americas, true),
             new Question(R.string.question_asia, true)
     };
-
+    //TODO
     private int[] mQuestionsBankDisabledButtons = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
             //new int[mQuestionBank.length];
     //Arrays.fill(mQuestionsBankDisabledButtons, 0);
 
     private int mCurrentIndex = 0;
+    private int mNumQuestionsAnswered = 0;
+    private int mNumCorrectAnswers = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +93,12 @@ public class QuizActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mNumQuestionsAnswered += 1;
                 checkAnswer(true);
                 mQuestionsBankDisabledButtons[mCurrentIndex] = 1;
                 disableAnswerButtons();
+                displayScore();
+
             }
         });
 
@@ -100,9 +106,11 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mNumQuestionsAnswered += 1;
                 checkAnswer(false);
                 mQuestionsBankDisabledButtons[mCurrentIndex] = 1;
                 disableAnswerButtons();
+                displayScore();
             }
         });
 
@@ -157,6 +165,7 @@ public class QuizActivity extends AppCompatActivity {
         int messageResId = 0;
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            mNumCorrectAnswers += 1;
         } else {
             messageResId = R.string.incorrect_toast;
         }
@@ -178,6 +187,13 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton.setClickable(true);
         //mTrueButton.setTextColor(0x000000);
         //mFalseButton.setTextColor(0x000000);
+    }
+
+    private void displayScore() {
+        if (mNumQuestionsAnswered == mQuestionBank.length) {
+            float score = (mNumQuestionsAnswered / mNumCorrectAnswers) * 100;
+            Toast.makeText(QuizActivity.this, "Your Score is " + String.valueOf(score) + "%", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
