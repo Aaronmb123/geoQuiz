@@ -209,8 +209,8 @@ public class QuizActivity extends AppCompatActivity {
         //mTrueButton.setTextColor(0xD3D3D3);
         //mFalseButton.setTextColor(0xD3D3D3);
         //Log.d("mQuestionBankDisabledButtons ", + Arrays.toString(mQuestionsBankDisabledButtons));
-        for(int num : mQuestionsBankDisabledButtons)
-           Log.v("index: ", Integer.toString(num));
+        //for(int num : mQuestionsBankDisabledButtons)
+           //Log.v("index: ", Integer.toString(num));
     }
 
     private void enableAnswerButtons() {
