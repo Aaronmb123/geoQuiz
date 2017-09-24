@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ public class CheatActivity extends AppCompatActivity {
     private static final String EXTRA_ANSWER_IS_TRUE = "bakeaaro.com.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN = "bakeaaro.com.geoquiz.answer_shown";
     private boolean mAnswerIsTrue;
+    private boolean mAnswerShown;
     private TextView mAnswerTV;
     private Button mShowAnswerButton;
 
@@ -27,12 +29,35 @@ public class CheatActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        //Log.i("cheat123 ", );
+        savedInstanceState.putBoolean("answer", mAnswerIsTrue);
+        savedInstanceState.putBoolean("shown", mAnswerShown);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
 
-        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mAnswerTV = (TextView) findViewById(R.id.answer_text_view);
+
+        if (savedInstanceState != null) {
+            mAnswerIsTrue = savedInstanceState.getBoolean("answer");
+            mAnswerShown = savedInstanceState.getBoolean("shown");
+            setAnswerShownResult(mAnswerShown);
+            if (mAnswerIsTrue) {
+                mAnswerTV.setText(R.string.true_button);
+            } else {
+                mAnswerTV.setText(R.string.false_button);
+            }
+        }
+
+        Log.i("cheat123 mAnswerIsTrue", String.valueOf(mAnswerIsTrue));
+        Log.i("cheat123 mAnswerShown", String.valueOf(mAnswerShown));
+
+        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mShowAnswerButton = (Button)findViewById(R.id.show_answer_button);
         mShowAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +67,7 @@ public class CheatActivity extends AppCompatActivity {
                 } else {
                     mAnswerTV.setText(R.string.false_button);
                 }
+                mAnswerShown = true;
                 setAnswerShownResult(true);
             }
         });
