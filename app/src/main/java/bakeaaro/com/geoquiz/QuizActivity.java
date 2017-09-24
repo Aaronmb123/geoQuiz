@@ -24,6 +24,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
+    private TextView mCheatsRemainingTextView;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
@@ -44,6 +45,7 @@ public class QuizActivity extends AppCompatActivity {
     private int mNumQuestionsAnswered = 0;
     private int mNumCorrectAnswers = 0;
     private boolean mIsCheater;
+    private int mCheatsRemaining = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,9 @@ public class QuizActivity extends AppCompatActivity {
             mIsCheater = savedInstanceState.getBoolean("cheater");
             mQuestionsBankCheated[mCurrentIndex] = mIsCheater;
         }
+
+        mCheatsRemainingTextView = (TextView) findViewById(R.id.cheats_remaining_tv);
+        mCheatsRemainingTextView.setText("Cheats remaining: " + String.valueOf(mCheatsRemaining));
 
         mCheatButton = (Button) findViewById(R.id.cheat_button);
         mCheatButton.setOnClickListener(new View.OnClickListener(){
@@ -234,6 +239,13 @@ public class QuizActivity extends AppCompatActivity {
             }
             mIsCheater = CheatActivity.wasAnswerShown(data);
             mQuestionsBankCheated[mCurrentIndex] = mIsCheater;
+            if(mIsCheater && mCheatsRemaining > 0) mCheatsRemaining -= 1;
+            if (mCheatsRemaining < 1) {
+                mCheatButton.setClickable(false);
+                Toast.makeText(QuizActivity.this, "No more cheating!",Toast.LENGTH_SHORT).show();
+            }
+            //mCheatsRemainingTextView = (TextView) findViewById(R.id.cheats_remaining_tv);
+            mCheatsRemainingTextView.setText("Cheats remaining: " + mCheatsRemaining);
 
         }
     }

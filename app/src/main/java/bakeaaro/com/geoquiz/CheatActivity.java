@@ -53,8 +53,6 @@ public class CheatActivity extends AppCompatActivity {
             }
         }
 
-        //Log.i("cheat123 mAnswerIsTrue", String.valueOf(mAnswerIsTrue));
-        //Log.i("cheat123 mAnswerShown", String.valueOf(mAnswerShown));
 
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mShowAnswerButton = (Button)findViewById(R.id.show_answer_button);
