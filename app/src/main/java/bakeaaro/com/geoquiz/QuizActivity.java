@@ -38,6 +38,8 @@ public class QuizActivity extends AppCompatActivity {
             //new int[mQuestionBank.length];
     //Arrays.fill(mQuestionsBankDisabledButtons, 0);
 
+    private boolean[] mQuestionsBankCheated = {false, false, false, false, false,
+                                               false, false, false, false, false};
     private int mCurrentIndex = 0;
     private int mNumQuestionsAnswered = 0;
     private int mNumCorrectAnswers = 0;
@@ -51,6 +53,7 @@ public class QuizActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             mIsCheater = savedInstanceState.getBoolean("cheater");
+            mQuestionsBankCheated[mCurrentIndex] = mIsCheater;
         }
 
         mCheatButton = (Button) findViewById(R.id.cheat_button);
@@ -77,7 +80,8 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                mIsCheater = false;
+                mIsCheater = mQuestionsBankCheated[mCurrentIndex];
+
                 updateQuestion();
                 if (mQuestionsBankDisabledButtons[mCurrentIndex] == 0) {
                     enableAnswerButtons();
@@ -96,7 +100,7 @@ public class QuizActivity extends AppCompatActivity {
                 } else {
                     mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
                 }
-                mIsCheater = false;
+                mIsCheater = mQuestionsBankCheated[mCurrentIndex];
                 updateQuestion();
                 if (mQuestionsBankDisabledButtons[mCurrentIndex] == 0) {
                     enableAnswerButtons();
@@ -229,6 +233,7 @@ public class QuizActivity extends AppCompatActivity {
                 return;
             }
             mIsCheater = CheatActivity.wasAnswerShown(data);
+            mQuestionsBankCheated[mCurrentIndex] = mIsCheater;
 
         }
     }
