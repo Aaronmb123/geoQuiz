@@ -31,7 +31,6 @@ public class CheatActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        //Log.i("cheat123 ", );
         savedInstanceState.putBoolean("answer", mAnswerIsTrue);
         savedInstanceState.putBoolean("shown", mAnswerShown);
     }
@@ -54,8 +53,8 @@ public class CheatActivity extends AppCompatActivity {
             }
         }
 
-        Log.i("cheat123 mAnswerIsTrue", String.valueOf(mAnswerIsTrue));
-        Log.i("cheat123 mAnswerShown", String.valueOf(mAnswerShown));
+        //Log.i("cheat123 mAnswerIsTrue", String.valueOf(mAnswerIsTrue));
+        //Log.i("cheat123 mAnswerShown", String.valueOf(mAnswerShown));
 
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mShowAnswerButton = (Button)findViewById(R.id.show_answer_button);
