@@ -33,9 +33,9 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_americas, true),
             new Question(R.string.question_asia, true)
     };
-    //TODO
     private int[] mQuestionsBankDisabledButtons = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-            //new int[mQuestionBank.length];
+    //TODO replace above with below
+    //new int[mQuestionBank.length];
     //Arrays.fill(mQuestionsBankDisabledButtons, 0);
 
     private boolean[] mQuestionsBankCheated = {false, false, false, false, false,
@@ -54,6 +54,7 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             mIsCheater = savedInstanceState.getBoolean("cheater");
             mQuestionsBankCheated[mCurrentIndex] = mIsCheater;
+            mQuestionsBankDisabledButtons[mCurrentIndex] = savedInstanceState.getInt("disabled");
         }
 
         mCheatButton = (Button) findViewById(R.id.cheat_button);
@@ -111,6 +112,7 @@ public class QuizActivity extends AppCompatActivity {
         });
 
         mTrueButton = (Button) findViewById(R.id.true_button);
+
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +124,8 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         });
+        if (mQuestionsBankDisabledButtons[mCurrentIndex] == 1)
+            mTrueButton.setClickable(false);
 
         mFalseButton = (Button) findViewById(R.id.false_button);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +138,8 @@ public class QuizActivity extends AppCompatActivity {
                 displayScore();
             }
         });
+        if (mQuestionsBankDisabledButtons[mCurrentIndex] == 1)
+            mFalseButton.setClickable(false);
 
         updateQuestion();
 
@@ -160,9 +166,10 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        Log.i(TAG, "onSaveInstanceState");
+        Log.d(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
         savedInstanceState.putBoolean("cheater", mIsCheater);
+        savedInstanceState.putInt("disabled", mQuestionsBankDisabledButtons[mCurrentIndex]);
     }
 
     @Override
@@ -205,7 +212,7 @@ public class QuizActivity extends AppCompatActivity {
         //mFalseButton.setTextColor(0xD3D3D3);
         //Log.d("mQuestionBankDisabledButtons ", + Arrays.toString(mQuestionsBankDisabledButtons));
         for(int num : mQuestionsBankDisabledButtons)
-           Log.v("index: ", Integer.toString(num));
+           Log.d("index: ", Integer.toString(num));
     }
 
     private void enableAnswerButtons() {
